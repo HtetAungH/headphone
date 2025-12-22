@@ -1,7 +1,9 @@
-import React from "react";
+import React, { useState } from "react";
 import slideData from "./data/slideData.js";
+import SpecsPopup from "./SpecsPopup";
 
 const SliderImages = ({ currentIndex }) => {
+  const [selectedProduct, setSelectedProduct] = useState(null);
   const getSliderClasses = (index) => {
     const total = slideData.length;
     const prevIndex = (currentIndex - 1 + total) % total;
@@ -51,15 +53,25 @@ const SliderImages = ({ currentIndex }) => {
   };
 
   return (
-    <div className="slider-images w-full md:w-1/2 h-[450px] md:h-full relative order-2 md:order-none">
+    <div className="slider-images w-full md:w-1/2 h-[450px] md:h-full relative order-2 md:order-0">
       {slideData.map((slide, index) => (
         <img
           key={index}
-          className={getSliderClasses(index)}
+          // Only allow clicking on the active (front) image
+          onClick={() => index === currentIndex && setSelectedProduct(slide)}
+          className={`${getSliderClasses(index)} ${
+            index === currentIndex ? "cursor-pointer" : ""
+          }`}
           src={slide.image}
           alt={slide.alt}
         />
       ))}
+
+      <SpecsPopup
+        isOpen={!!selectedProduct}
+        onClose={() => setSelectedProduct(null)}
+        product={slideData[currentIndex]}
+      />
     </div>
   );
 };
