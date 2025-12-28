@@ -67,11 +67,13 @@ const SliderImages = ({ currentIndex }) => {
         />
       ))}
 
-      <SpecsPopup
-        isOpen={!!selectedProduct}
-        onClose={() => setSelectedProduct(null)}
-        product={slideData[currentIndex]}
-      />
+      {selectedProduct && (
+        <SpecsPopup
+          isOpen={!!selectedProduct}
+          onClose={() => setSelectedProduct(null)}
+          product={selectedProduct}
+        />
+      )}
     </div>
   );
 };

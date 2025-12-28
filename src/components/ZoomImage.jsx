@@ -8,8 +8,8 @@ const ZoomImage = ({ src, alt }) => {
   const handleMouseMove = (e) => {
     const { left, top, width, height } =
       e.currentTarget.getBoundingClientRect();
-    const x = ((e.pageX - left - window.pageXOffset) / width) * 100;
-    const y = ((e.pageY - top - window.pageYOffset) / height) * 100;
+    const x = ((e.pageX - left - window.scrollX) / width) * 100;
+    const y = ((e.pageY - top - window.scrollY) / height) * 100;
     setPosition({ x, y });
   };
 
@@ -30,7 +30,13 @@ const ZoomImage = ({ src, alt }) => {
       onMouseMove={handleMouseMove}
       onWheel={handleWheel}
     >
-      <img src={src} alt={alt} className="w-full h-auto block" />
+      <img
+        src={src}
+        alt={alt}
+        className={`w-full h-auto transition-opacity duration-300 ${
+          showMagnifier ? "opacity-0" : "opacity-100"
+        }`}
+      />
 
       {showMagnifier && (
         <div

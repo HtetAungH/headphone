@@ -52,19 +52,21 @@ const CartDrawer = ({ isOpen, onClose, product }) => {
             </div>
             <div className="flex-1">
               <h3 className="font-bold text-black text-lg leading-tight">
-                {product.alt}
+                {product.title}
               </h3>
               <p className="text-gray-500 text-sm mt-1">
                 Color: Selected Finish
               </p>
-              <p className="text-black font-black mt-2 text-xl">$779.99</p>
+              <p className="text-black font-black mt-2 text-xl">
+                {product.price}
+              </p>
             </div>
           </div>
 
           <div className="mt-auto space-y-4">
             <div className="flex justify-between text-black font-bold text-lg">
               <span>Subtotal</span>
-              <span>$779.99</span>
+              <span>{product.price}</span>
             </div>
             <p className="text-gray-400 text-xs">
               Shipping and taxes calculated at checkout.

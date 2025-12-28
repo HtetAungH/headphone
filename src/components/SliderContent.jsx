@@ -6,10 +6,12 @@ import CartDrawer from "./CartDrawer";
 const SliderContent = ({ currentIndex }) => {
   const [isBuying, setIsBuying] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [productForCart, setProductForCart] = useState(null);
   const currentProduct = slideData[currentIndex];
 
   const handleBuy = () => {
     setIsBuying(true);
+    setProductForCart(currentProduct);
     // Simulate a short loading delay before opening the cart
     setTimeout(() => {
       setIsBuying(false);
@@ -31,15 +33,15 @@ const SliderContent = ({ currentIndex }) => {
 
       <div className="slider-content">
         <h2 className="text-white text-3xl md:text-4xl lg:text-5xl font-black leading-tight mb-5">
-          {currentProduct.alt}
+          {currentProduct.title}
         </h2>
         <p className="text-white text-base lg:text-lg font-normal leading-6 mb-8 opacity-90">
-          The ultimate over-ear listening experience.
+          {currentProduct.description}
         </p>
 
         <div className="flex flex-col gap-6 mb-10">
           <h3 className="text-white text-4xl md:text-5xl font-black leading-tight">
-            $779.99
+            {currentProduct.price}
           </h3>
 
           <button
@@ -64,11 +66,13 @@ const SliderContent = ({ currentIndex }) => {
         <SocialIcons />
       </div>
 
-      <CartDrawer
-        isOpen={isDrawerOpen}
-        onClose={() => setIsDrawerOpen(false)}
-        product={currentProduct}
-      />
+      {productForCart && (
+        <CartDrawer
+          isOpen={isDrawerOpen}
+          onClose={() => setIsDrawerOpen(false)}
+          product={productForCart}
+        />
+      )}
     </div>
   );
 };
