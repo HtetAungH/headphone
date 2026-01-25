@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import CheckoutOverlay from "./CheckoutOverLay";
+import CheckoutOverlay from "./CheckoutOverlay.jsx";
 
 const CartDrawer = ({ isOpen, onClose, product }) => {
   const [showCheckout, setShowCheckout] = useState(false);
