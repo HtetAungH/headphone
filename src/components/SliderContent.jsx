@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import SocialIcons from "./SocialIcons";
 import slideData from "./data/slideData.js";
 import CartDrawer from "./CartDrawer";
+import OrderHistoryDrawer from "./OrderHistoryDrawer"; // Import the new drawer
 
 const SliderContent = ({ currentIndex }) => {
   const [isBuying, setIsBuying] = useState(false);
   const [isDrawerOpen, setIsDrawerOpen] = useState(false);
+  const [isHistoryOpen, setIsHistoryOpen] = useState(false); // State for history drawer
   const [productForCart, setProductForCart] = useState(null);
   const currentProduct = slideData[currentIndex];
 
@@ -21,14 +23,21 @@ const SliderContent = ({ currentIndex }) => {
 
   return (
     <div className="relative w-full max-w-xl md:w-1/2 md:max-w-lg lg:max-w-xl xl:max-w-2xl py-16 px-5 md:pl-16 lg:pl-24 xl:pl-32 order-1 md:order-0 h-full flex flex-col justify-center">
-      <div className="logo mb-5">
+      {/* Updated Logo Area with Orders Button */}
+      <div className="logo mb-5 flex items-center gap-6">
         <a href="#">
           <img
             src="https://www.yudiz.com/codepen/headphone-slider/logo.svg"
             alt="logo"
-            className="w-[200px] md:w-[230px] lg:w-[271px] h-auto"
+            className="w-[150px] md:w-[200px] h-auto"
           />
         </a>
+        <button
+          onClick={() => setIsHistoryOpen(true)}
+          className="text-white/70 hover:text-white text-xs font-bold uppercase tracking-widest border border-white/20 hover:border-white/50 px-4 py-2 rounded-full transition-all"
+        >
+          My Orders
+        </button>
       </div>
 
       <div className="slider-content">
@@ -73,6 +82,11 @@ const SliderContent = ({ currentIndex }) => {
           product={productForCart}
         />
       )}
+      {/* Render History Drawer */}
+      <OrderHistoryDrawer
+        isOpen={isHistoryOpen}
+        onClose={() => setIsHistoryOpen(false)}
+      />
     </div>
   );
 };

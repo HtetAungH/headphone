@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
-const CheckoutOverlay = ({ isOpen, onClose, product }) => {
+const CheckoutOverlay = ({ isOpen, onClose, product, quantity }) => {
   const [step, setStep] = useState(1); // 1: Shipping, 2: Payment, 3: Success
-  const [quantity, setQuantity] = useState(1);
 
   if (!isOpen) return null;
 
@@ -11,6 +10,31 @@ const CheckoutOverlay = ({ isOpen, onClose, product }) => {
     ? parseFloat(product.price.replace("$", ""))
     : 0;
   const currentTotal = (basePrice * quantity).toFixed(2);
+
+  const handlePayment = () => {
+    const newOrder = {
+      id: Date.now(),
+      date: new Date().toLocaleDateString(),
+      status: "Processing",
+      product: {
+        title: product.title,
+        image: product.image,
+        alt: product.alt,
+        price: product.price,
+      },
+      quantity: quantity,
+      total: currentTotal,
+    };
+
+    const existingOrders = JSON.parse(
+      localStorage.getItem("headphone_orders") || "[]",
+    );
+    localStorage.setItem(
+      "headphone_orders",
+      JSON.stringify([newOrder, ...existingOrders]),
+    );
+    setStep(3);
+  };
 
   return (
     <>
@@ -172,7 +196,7 @@ const CheckoutOverlay = ({ isOpen, onClose, product }) => {
                   </div>
 
                   <button
-                    onClick={() => setStep(3)}
+                    onClick={handlePayment}
                     className="mt-8 w-full py-4 bg-black text-white rounded-xl font-bold hover:bg-gray-800 transform active:scale-[0.98] transition-all flex items-center justify-center gap-2"
                   >
                     Pay ${currentTotal}
@@ -254,30 +278,11 @@ const CheckoutOverlay = ({ isOpen, onClose, product }) => {
                 </div>
               </div>
 
-              <div className="flex justify-between items-center mb-4">
-                <span>Quantity:</span>
-                <div className="flex items-center space-x-2">
-                  <button
-                    onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    -
-                  </button>
-                  <span>{quantity}</span>
-                  <button
-                    onClick={() => setQuantity(quantity + 1)}
-                    className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
-                  >
-                    +
-                  </button>
-                </div>
-              </div>
-
               <div className="mt-auto space-y-4 pt-8 border-t border-gray-200">
                 {/* Fixed Subtotal Row */}
                 <div className="flex justify-between text-gray-600">
                   <span>Subtotal</span>
-                  <span className="font-medium">${currentTotal}</span>
+                  <span className="font-medium">${product.currentTotal}</span>
                 </div>
 
                 <div className="flex justify-between text-gray-600">

@@ -3,6 +3,13 @@ import CheckoutOverlay from "./CheckoutOverLay";
 
 const CartDrawer = ({ isOpen, onClose, product }) => {
   const [showCheckout, setShowCheckout] = useState(false);
+  const [quantity, setQuantity] = useState(1);
+
+  const basePrice = product?.price
+    ? parseFloat(product.price.replace("$", ""))
+    : 0;
+  const currentTotal = (basePrice * quantity).toFixed(2);
+
   return (
     <>
       {/* Dark Overlay */}
@@ -57,6 +64,21 @@ const CartDrawer = ({ isOpen, onClose, product }) => {
               <p className="text-gray-500 text-sm mt-1">
                 Color: Selected Finish
               </p>
+              <div className="flex items-center space-x-2 mt-2">
+                <button
+                  onClick={() => setQuantity(Math.max(1, quantity - 1))}
+                  className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                >
+                  -
+                </button>
+                <span>{quantity}</span>
+                <button
+                  onClick={() => setQuantity(quantity + 1)}
+                  className="px-2 py-1 bg-gray-200 hover:bg-gray-300 rounded"
+                >
+                  +
+                </button>
+              </div>
               <p className="text-black font-black mt-2 text-xl">
                 {product.price}
               </p>
@@ -66,7 +88,7 @@ const CartDrawer = ({ isOpen, onClose, product }) => {
           <div className="mt-auto space-y-4">
             <div className="flex justify-between text-black font-bold text-lg">
               <span>Subtotal</span>
-              <span>{product.price}</span>
+              <span>${currentTotal}</span>
             </div>
             <p className="text-gray-400 text-xs">
               Shipping and taxes calculated at checkout.
@@ -88,6 +110,7 @@ const CartDrawer = ({ isOpen, onClose, product }) => {
               isOpen={showCheckout}
               onClose={() => setShowCheckout(false)}
               product={product}
+              quantity={quantity}
             />
           </div>
         </div>
